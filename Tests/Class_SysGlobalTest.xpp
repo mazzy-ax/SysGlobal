@@ -1,0 +1,271 @@
+﻿//
+// https://github.com/mazzy-ax/SysGlobal
+//
+// тестирует класс Global
+// название этого класса начинается на Sys, чтобы не задевать привычный способ поиска класса Global по первым буквам
+//
+// из-за разницы в названиях не найдет coverage автоматически.
+// ну и пусть. главное чтобы тестировало
+//
+class SysGlobalTest extends SysTestCase
+{
+
+    void testNZ()
+    {
+        this.assertEquals('A', nz('A','B'));
+        this.assertEquals('B', nz('','B'));
+        this.assertEquals('B', nz(0,'B'));
+        this.assertEquals('B', nz(null,'B'));
+        this.assertEquals('B', nz(DateNull(),'B'));
+        this.assertEquals(null, nz(null,null));
+
+        this.assertEquals(1, nz(1,2));
+        this.assertEquals(2, nz('',2));
+        this.assertEquals(2, nz(0,2));
+        this.assertEquals(2, nz(null,2));
+        this.assertEquals(2, nz(DateNull(),2));
+
+        this.assertEquals(01\01\2017, nz(01\01\2017,02\01\2017));
+        this.assertEquals(02\01\2017, nz('',02\01\2017));
+        this.assertEquals(02\01\2017, nz(0,02\01\2017));
+        this.assertEquals(02\01\2017, nz(null,02\01\2017));
+    }
+
+    void testStrAfter()
+    {
+        this.assertEquals('DEF-GH',    strAfter('ABC-DEF-GH','-'));
+        this.assertEquals('GH',        strAfter('ABC-DEF-GH','DEF-'));
+        this.assertEquals('',          strAfter('ABC-DEF-GH','H'));
+        this.assertEquals('BC-DEF-GH', strAfter('ABC-DEF-GH','A'));
+        this.assertEquals('ABC-DEF-GH',strAfter('ABC-DEF-GH',','));
+    }
+
+    void testStrAfterChar()
+    {
+        this.assertEquals('DEF-GH',    strAfterChar('ABC-DEF-GH','-='));
+        this.assertEquals('DEF-GH',    strAfterChar('ABC-DEF-GH','E-='));
+        this.assertEquals('',          strAfterChar('ABC-DEF-GH','H'));
+        this.assertEquals('BC-DEF-GH', strAfterChar('ABC-DEF-GH','A-='));
+        this.assertEquals('ABC-DEF-GH',strAfterChar('ABC-DEF-GH',','));
+    }
+
+    void testStrAfterLast()
+    {
+        this.assertEquals('GH',        strAfterLast('ABC-DEF-GH','-'));
+        this.assertEquals('GH',        strAfterLast('ABC-DEF-GH','DEF-'));
+        this.assertEquals('',          strAfterLast('ABC-DEF-GH','H'));
+        this.assertEquals('BC-DEF-GH', strAfterLast('ABC-DEF-GH','A'));
+        this.assertEquals('ABC-DEF-GH',strAfterLast('ABC-DEF-GH',','));
+    }
+
+    void testStrAfterLastChar()
+    {
+        this.assertEquals('GH',        strAfterLastChar('ABC-DEF-GH','-='));
+        this.assertEquals('GH',        strAfterLastChar('ABC-DEF-GH','E-='));
+        this.assertEquals('',          strAfterLastChar('ABC-DEF-GH','H-='));
+        this.assertEquals('BC-DEF-GH', strAfterLastChar('ABC-DEF-GH','A'));
+        this.assertEquals('ABC-DEF-GH',strAfterLastChar('ABC-DEF-GH',','));
+    }
+
+    void testStrBefore()
+    {
+        this.assertEquals('ABC',       strBefore('ABC-DEF-GH','-'));
+        this.assertEquals('ABC',       strBefore('ABC-DEF-GH','-DEF'));
+        this.assertEquals('',          strBefore('ABC-DEF-GH','A'));
+        this.assertEquals('ABC-DEF-G', strBefore('ABC-DEF-GH','H'));
+        this.assertEquals('ABC-DEF-GH',strBefore('ABC-DEF-GH',','));
+    }
+
+    void testStrBeforeChar()
+    {
+        this.assertEquals('ABC',       strBeforeChar('ABC-DEF-GH','-='));
+        this.assertEquals('ABC',       strBeforeChar('ABC-DEF-GH','E-='));
+        this.assertEquals('',          strBeforeChar('ABC-DEF-GH','A-='));
+        this.assertEquals('ABC-DEF-G', strBeforeChar('ABC-DEF-GH','H'));
+        this.assertEquals('ABC-DEF-GH',strBeforeChar('ABC-DEF-GH',','));
+    }
+
+    void testStrBeforeLast()
+    {
+        this.assertEquals('ABC-DEF'   ,strBeforeLast('ABC-DEF-GH','-'));
+        this.assertEquals('ABC'       ,strBeforeLast('ABC-DEF-GH','-DEF'));
+        this.assertEquals(''          ,strBeforeLast('ABC-DEF-GH','A'));
+        this.assertEquals('ABC-DEF-G' ,strBeforeLast('ABC-DEF-GH','H'));
+        this.assertEquals('ABC-DEF-GH',strBeforeLast('ABC-DEF-GH',','));
+    }
+
+    void testStrBeforeLastChar()
+    {
+        this.assertEquals('ABC-DEF'   ,strBeforeLastChar('ABC-DEF-GH','-='));
+        this.assertEquals('ABC-DEF'   ,strBeforeLastChar('ABC-DEF-GH','E-='));
+        this.assertEquals(''          ,strBeforeLastChar('ABC-DEF-GH','A'));
+        this.assertEquals('ABC-DEF-G' ,strBeforeLastChar('ABC-DEF-GH','H-='));
+        this.assertEquals('ABC-DEF-GH',strBeforeLastChar('ABC-DEF-GH',','));
+    }
+
+    void testStrLeft()
+    {
+        this.assertEquals('ABC',strLeft('ABC-DEF-GH',3));
+        this.assertEquals('',strLeft('ABC-DEF-GH',0));
+        this.assertEquals('',strLeft('ABC-DEF-GH',-3));
+        this.assertEquals('ABC-DEF-GH',strLeft('ABC-DEF-GH',30));
+    }
+
+    void testStrLFix()
+    {
+        this.assertEquals('ABC  ',strLFix('ABC',5));
+        this.assertEquals('ABC==',strLFix('ABC',5,'='));
+        this.assertEquals('ABC==',strLFix('ABC',5,'=Z'));
+        this.assertEquals('ABC',strLFix('ABC',3,'='));
+        this.assertEquals('AB',strLFix('ABC',2,'='));
+        this.assertEquals('',strLFix('ABC',0,'='));
+        this.assertEquals('A',strLFix('ABC',-1,'='));
+        this.assertEquals('A',strLFix('ABC',-5,'='));
+    }
+
+    void testStrPadLeft()
+    {
+        this.assertEquals('  ABC',strPadLeft('ABC',5));
+        this.assertEquals('==ABC',strPadLeft('ABC',5,'='));
+        this.assertEquals('==ABC',strPadLeft('ABC',5,'=Z'));
+        this.assertEquals('ABC',strPadLeft('ABC',3,'='));
+        this.assertEquals('ABC',strPadLeft('ABC',2,'='));
+        this.assertEquals('ABC',strPadLeft('ABC',0,'='));
+        this.assertEquals('ABC',strPadLeft('ABC',-1,'='));
+        this.assertEquals('ABC',strPadLeft('ABC',-5,'='));
+    }
+
+    void testStrPadRight()
+    {
+        this.assertEquals('ABC  ',strPadRight('ABC',5));
+        this.assertEquals('ABC==',strPadRight('ABC',5,'='));
+        this.assertEquals('ABC==',strPadRight('ABC',5,'=Z'));
+        this.assertEquals('ABC',strPadRight('ABC',3,'='));
+        this.assertEquals('ABC',strPadRight('ABC',2,'='));
+        this.assertEquals('ABC',strPadRight('ABC',0,'='));
+        this.assertEquals('ABC',strPadRight('ABC',-1,'='));
+        this.assertEquals('ABC',strPadRight('ABC',-5,'='));
+    }
+
+    void testStrRFix()
+    {
+        this.assertEquals('  ABC',strRFix('ABC',5));
+        this.assertEquals('==ABC',strRFix('ABC',5,'='));
+        this.assertEquals('==ABC',strRFix('ABC',5,'=Z'));
+        this.assertEquals('ABC',strRFix('ABC',3,'='));
+        this.assertEquals('AB',strRFix('ABC',2,'='));
+        this.assertEquals('',strRFix('ABC',0,'='));
+        this.assertEquals('A',strRFix('ABC',-1,'='));
+        this.assertEquals('A',strRFix('ABC',-5,'='));
+    }
+
+    void testStrRight()
+    {
+        this.assertEquals('DEF-GH'    ,strRight('ABC-DEF-GH',6));
+        this.assertEquals(''          ,strRight('ABC-DEF-GH',0));
+        this.assertEquals(''          ,strRight('ABC-DEF-GH',-3));
+        this.assertEquals('ABC-DEF-GH',strRight('ABC-DEF-GH',30));
+    }
+
+    void testStrSplitChar()
+    {
+        this.assertEquals(['ABC','DEF','GH'],       strSplitChar('ABC-DEF-GH','-='));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitChar('ABC-DEF-GH','-=',0));
+        this.assertEquals(['ABC-DEF-GH'],           strSplitChar('ABC-DEF-GH','-=',1));
+        this.assertEquals(['ABC','DEF-GH'],         strSplitChar('ABC-DEF-GH','-=',2));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitChar('ABC-DEF-GH','-=',3));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitChar('ABC-DEF-GH','-=',4));
+
+        this.assertEquals(['ABC-DEF-GH'],           strSplitChar('ABC-DEF-GH',''));
+        this.assertEquals(['ABC-DEF-GH'],           strSplitChar('ABC-DEF-GH','',4));
+
+        this.assertEquals(['','ABC','DEF','GH',''], strSplitChar('-ABC-DEF-GH-','-='));
+
+    }
+
+    void testStrSplitCon()
+    {
+        this.assertEquals(['ABC','DEF','GH'],       strSplitCon('ABC=DEF:=GH',[':=','=']));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitCon('ABC=DEF:=GH',[':=','='],0));
+        this.assertEquals(['ABC=DEF:=GH'],          strSplitCon('ABC=DEF:=GH',[':=','='],1));
+        this.assertEquals(['ABC','DEF:=GH'],        strSplitCon('ABC=DEF:=GH',[':=','='],2));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitCon('ABC=DEF:=GH',[':=','='],3));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitCon('ABC=DEF:=GH',[':=','='],4));
+
+        this.assertEquals(['ABC','DEF','GH'],       strSplitCon('ABC=DEF:=GH',['=',':=']));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitCon('ABC=DEF:=GH',['=',':='],0));
+        this.assertEquals(['ABC=DEF:=GH'],          strSplitCon('ABC=DEF:=GH',['=',':='],1));
+        this.assertEquals(['ABC','DEF:=GH'],        strSplitCon('ABC=DEF:=GH',['=',':='],2));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitCon('ABC=DEF:=GH',['=',':='],3));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitCon('ABC=DEF:=GH',['=',':='],4));
+
+        this.assertEquals(['ABC=DEF:=GH'],          strSplitCon('ABC=DEF:=GH',connull()));
+        this.assertEquals(['ABC=DEF:=GH'],          strSplitCon('ABC=DEF:=GH',connull(),4));
+
+        this.assertEquals(['','ABC','DEF','GH',''], strSplitCon(':=ABC=DEF:=GH=',[':=','=']));
+        this.assertEquals(['','ABC','DEF','GH',''], strSplitCon(':=ABC=DEF:=GH=',['=',':=']));
+
+        this.assertEquals(['','ABC','DEF','GH',''], strSplitCon(':=ABC:DEF:=GH:',[':=',':']));
+        this.assertEquals(['','ABC','DEF','GH',''], strSplitCon(':=ABC:DEF:=GH:',[':',':=']));
+    }
+
+    void testStrSplitStr()
+    {
+        this.assertEquals(['ABC','DEF','GH'],       strSplitStr('ABC:=DEF:=GH',':='));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitStr('ABC:=DEF:=GH',':=',0));
+        this.assertEquals(['ABC:=DEF:=GH'],         strSplitStr('ABC:=DEF:=GH',':=',1));
+        this.assertEquals(['ABC','DEF:=GH'],        strSplitStr('ABC:=DEF:=GH',':=',2));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitStr('ABC:=DEF:=GH',':=',3));
+        this.assertEquals(['ABC','DEF','GH'],       strSplitStr('ABC:=DEF:=GH',':=',4));
+
+        this.assertEquals(['ABC:=DEF:=GH'],         strSplitStr('ABC:=DEF:=GH',''));
+        this.assertEquals(['ABC:=DEF:=GH'],         strSplitStr('ABC:=DEF:=GH','',4));
+
+        this.assertEquals(['','ABC','DEF','GH',''], strSplitStr(':=ABC:=DEF:=GH:=',':='));
+
+    }
+
+    void testStrTrim()
+    {
+        this.assertEquals('ABC',strTrim('ABC  '));
+        this.assertEquals('ABC',strTrim('  ABC'));
+        this.assertEquals('ABC',strTrim('ABC  \r\n  '));
+        this.assertEquals('ABC',strTrim('  \r\n  ABC'));
+        this.assertEquals('ABC',strTrim('  \r\n  ABC  \r\n  '));
+        this.assertEquals('ABC',strTrim(@'ABC
+        '));
+        this.assertEquals('ABC',strTrim(@'
+        ABC'));
+        this.assertEquals('ABC',strTrim(@'
+        ABC
+        '));
+        this.assertEquals('A',strTrim('  A  '));
+
+        this.assertEquals('ABC',strTrim('==ABC==','='));
+        this.assertEquals('A',strTrim('==A==','='));
+
+
+        this.assertEquals('',strTrim('  '));
+        this.assertEquals('',strTrim('  \r\n  '));
+        this.assertEquals('',strTrim(@'
+        '));
+
+    }
+
+    static void main(Args args)
+    {
+        SysTestRunner       runner      = new SysTestRunner(classstr(SysGlobalTest));
+        SysTestListenerDB   listener    = new SysTestListenerDB();
+        SysTestJobTable     sysTestJobTable;
+
+        runner.getResult().addListener(listener);
+        runner.getResult().getListeners();
+        runner.run();
+
+        sysTestJobTable = SysTestJobTable::find(listener.parmJobId());
+        infolog.add( sysTestJobTable.Status == SysTestStatus::Passed ? Exception::Info : Exception::Warning,
+                     strfmt("%3: Test complete. %1:%2", sysTestJobTable.TestJobId, sysTestJobTable.Name, sysTestJobTable.Status),
+                     '', SysInfoAction_TableField::newBuffer(sysTestJobTable) );
+    }
+
+}
